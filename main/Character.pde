@@ -43,10 +43,26 @@ class Character{
         
       float xDir = this.characterToFollow.posX - this.posX, yDir = this.characterToFollow.posY - this.posY;
       float modulus = sqrt(xDir * xDir + yDir * yDir);
+      modulus = GetDistance(this.characterToFollow.posX , this.posX, this.characterToFollow.posY,this.posY);
       xDir /= modulus;
       yDir /= modulus;
-      this.posX += xDir * deltaTime * this.speed;
-      this.posY += yDir * deltaTime * this.speed;
+      if(this.characterToAvoid!=null){
+        float newposX =  this.posX + xDir * deltaTime * this.speed;
+        float newposY = this.posY + yDir * deltaTime * this.speed;
+        float distanceBtwn = GetDistance(this.characterToAvoid.posX, newposX, this.characterToAvoid.posY, newposY);
+        if(distanceBtwn>this.avoidDistance){
+          this.posX = newposX;
+          this.posY = newposY;
+        }
+        else if(distanceBtwn < this.avoidDistance*1.2f){
+          this.posX -= xDir * deltaTime * this.speed;
+          this.posY -= yDir * deltaTime * this.speed;
+        }
+      }
+      else{
+        this.posX += xDir * deltaTime * this.speed;
+        this.posY += yDir * deltaTime * this.speed;
+      }
       //Move toward objective with proper speed scaling and deltaTime
     }
   }
