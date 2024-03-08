@@ -1,3 +1,6 @@
+import processing.sound.*;
+SoundFile bgMusic;
+
 final float FPS = 120;
 final float SPEED = 5.0f;
 final float INCREMENT = 0.01f;
@@ -7,6 +10,7 @@ final int SPAWN_RATE = 100;
 final int WANDER_TIME = 300;
 final float ERROR = 1.0f;
 //Constants
+
 
 float deltaTime;
 //Make deltaTime publicly available for all characters
@@ -34,13 +38,15 @@ void setup() {
   size(1800, 900); 
   frameRate(FPS);
   noStroke();
+  bgMusic = new SoundFile(this,"../AudioFiles/R&M-theme.mp3");
+  bgMusic.loop();
   printStartScreen();
   
   MouseCursor = new Character(mouseX, mouseY, 0, 0, 0, 0, 0.0f, null, null, 0, 0, "../Rick.png");
   
-  PC = new PlayerCharacter(width/2.0f, height/2.0f, 50, 50, 3, 5.0f, 0.0f, MouseCursor, null, 0, 0, "../Rick.png");
-  NPC1 = new Character(width/2.0f + 50, height/2.0f, 50, 50, 3, 5.0f, 0.0f, PC, null, 100.0f, 0, "../Morty.png");
-  NPC2 = new Character(width/2.0f + 100, height/2.0f, 50, 50, 3, 5.0f, 0.0f, NPC1, null, 100.0f, 0, "../Morty.png");
+  PC = new PlayerCharacter(width/2.0f, height/2.0f, 50, 50, 3, 5.0f, 0.0f, MouseCursor, null, 0, 0, "../Images/Rick.png");
+  NPC1 = new Character(width/2.0f + 50, height/2.0f, 50, 50, 3, 5.0f, 0.0f, PC, null, 100.0f, 0, "../Images/Morty.png");
+  NPC2 = new Character(width/2.0f + 100, height/2.0f, 50, 50, 3, 5.0f, 0.0f, NPC1, null, 100.0f, 0, "../Images/Morty.png");
 }
 float GetDistance(float X1, float X2, float Y1, float Y2){
   float c1 = X1-X2;
@@ -64,7 +70,7 @@ void draw() {
   //Set deltaTime once to avoid recomputation
   
   if(Enemies.size() < N && ++spawnRate > SPAWN_RATE) { 
-    Enemies.add(new Character(0, random(0, height), 50.0f, 50.0f, 3, 2.5f, INCREMENT, NPC2, PC, 0.0f, 200.0f, "../CROMULON.png"));
+    Enemies.add(new Character(0, random(0, height), 50.0f, 50.0f, 3, 2.5f, INCREMENT, NPC2, PC, 0.0f, 200.0f, "../Images/CROMULON.png"));
     spawnRate = 0;
   }
   //Spawn the enemies every so often until no enemies are left to spawn
@@ -121,6 +127,7 @@ void keyReleased() { //Turn off keys, consider enemy number
       //Select mode
     } else if(key == ENTER) {
       start = true;
+      bgMusic.stop();
       return;
       //Start game
     }
