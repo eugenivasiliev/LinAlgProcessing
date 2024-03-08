@@ -50,11 +50,11 @@ class Character{
         float newposX =  this.posX + xDir * deltaTime * this.speed;
         float newposY = this.posY + yDir * deltaTime * this.speed;
         float distanceBtwn = GetDistance(this.characterToAvoid.posX, newposX, this.characterToAvoid.posY, newposY);
-        if(distanceBtwn>this.avoidDistance){
+        if(distanceBtwn>this.avoidDistance*1.1f){
           this.posX = newposX;
           this.posY = newposY;
         }
-        else if(distanceBtwn < this.avoidDistance*1.2f){
+        else if(distanceBtwn < this.avoidDistance*.9f){
           this.posX -= xDir * deltaTime * this.speed;
           this.posY -= yDir * deltaTime * this.speed;
         }
