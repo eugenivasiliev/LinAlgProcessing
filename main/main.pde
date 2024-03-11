@@ -12,6 +12,7 @@ final float ERROR = 1.0f;
 final float timeToBeat = 400;
 float countdown;
 int lifes = 3;
+int score = 0; 
 //Constants
 
 
@@ -108,7 +109,7 @@ void draw() {
   if(start){
     countdown -= deltaTime();
     textSize(24);
-    text("Lifes: "+lifes+"\nRemaining Time: " + (int)countdown , 40, 40); 
+    text("Lifes: "+lifes+"\nRemaining Time: " + (int)countdown +"\nScore: " +score, 40, 40); 
       if(countdown <= 0){
         lifes--;
         countdown = timeToBeat;
