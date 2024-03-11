@@ -9,7 +9,7 @@ final int MAX_ENEMIES = 100;
 final int SPAWN_RATE = 100;
 final int WANDER_TIME = 300;
 final float ERROR = 1.0f;
-final float timeToBeat = 40;
+final float timeToBeat = 400;
 float countdown;
 int lifes = 3;
 //Constants
@@ -103,11 +103,12 @@ void draw() {
     Enemy.posCheck();
     Enemy.Draw();
   }
+  DrawObstacles();
   //Update and draw all enemies
   if(start){
     countdown -= deltaTime();
     textSize(24);
-    text("Lifes: "+lifes+"\nRemaining Time: " +countdown , 40, 40); 
+    text("Lifes: "+lifes+"\nRemaining Time: " + (int)countdown , 40, 40); 
       if(countdown <= 0){
         lifes--;
         countdown = timeToBeat;
@@ -148,6 +149,7 @@ void keyReleased() { //Turn off keys, consider enemy number
     } else if(key == ENTER) {
       start = true;
       countdown = timeToBeat;
+      GenerateObstacles();
       bgMusic.stop();
       return;
       //Start game
