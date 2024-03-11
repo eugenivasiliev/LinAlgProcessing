@@ -6,6 +6,7 @@ class Character{
   Character characterToFollow, characterToAvoid;
   float followingDistance, avoidDistance;
   PImage sprite;
+  PImage[] lifebar = new PImage[4];
   //Main variables
   
   int sign = 1;
@@ -28,6 +29,8 @@ class Character{
     this.followingDistance = fd;
     this.avoidDistance = ad;
     this.sprite = loadImage(spritePath);
+    for (int i = 0; i < 4; i++)
+      this.lifebar[i] = loadImage("../Images/lifebar"+i+".png");
   }
   
   void Follow() {
@@ -69,6 +72,7 @@ class Character{
   
   void Draw() {
     image(this.sprite, this.posX - this.sizeX/2.0f, this.posY - this.sizeY/2.0f, this.sizeX,this.sizeY);
+    image(lifebar[life], this.posX - this.sizeX/2.0f, this.posY - this.sizeY, this.sizeX,this.sizeY);
     //Draw the character
   }
   

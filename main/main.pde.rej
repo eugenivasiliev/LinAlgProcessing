@@ -1,0 +1,12 @@
+diff a/main/main.pde b/main/main.pde	(rejected hunks)
+@@ -74,8 +74,9 @@
+     spawnRate = 0;
+   }
+   //Spawn the enemies every so often until no enemies are left to spawn
+-  
+   background(0);
++  //image(loadImage("../Images/bg.jpg"), 0, 0, width, height);
++  
+   //Erase screen
+   
+   PC.Movement(mode);
