@@ -1,7 +1,7 @@
 import processing.sound.*;
 SoundFile bgMusic;
 
-final float FPS = 120;
+final float FPS = 60;
 final float SPEED = 5.0f;
 final float INCREMENT = 0.01f;
 final float MAX_SPEED = 2.5f;
@@ -59,9 +59,6 @@ float GetDistance(float X1, float X2, float Y1, float Y2){
 }
 void draw() {
   
-  //collisiones
-  //for(int i = 0 ; i<(Enemies.size()+3) ; i++){
-  //}
   
   
   
@@ -116,10 +113,22 @@ void draw() {
         if(lifes <= 0)
           exit();
       else{
-        //codi per reiniciar el joc
+        //codi per reiniciar el joc(pendent)
       }
     }
   }
+  //collisions enemics 
+  int col = 0;
+  for(int i = 0 ; i<(Enemies.size()) ; i++){
+    Character currentEnemy = Enemies.get(i);
+    if(
+        (currentEnemy.posX + currentEnemy.sizeX > PC.posX && currentEnemy.posY + currentEnemy.sizeY > PC.posY) &&
+        (currentEnemy.posX < PC.posX +PC.sizeX && currentEnemy.posY < PC.posY +PC.sizeY) 
+    ){
+      col++;
+    }
+  }
+  text("Colisions with player: " + col, 500, 40); 
 }
 
 void keyPressed() { //Turn on keys
