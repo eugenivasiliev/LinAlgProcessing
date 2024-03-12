@@ -13,6 +13,7 @@ final float timeToBeat = 400;
 float countdown;
 int lifes = 3;
 int score = 0; 
+int collectedPowerUps = 0;
 //Constants
 
 
