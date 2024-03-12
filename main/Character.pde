@@ -60,8 +60,8 @@ class Character{
             for(int i = 0 ; i<(obstacles.size()) ; i++){
               Obstacle o = obstacles.get(i);
               if(
-                (o.posX + o.sizeX > newposX && o.posY + o.sizeY > newposY) &&
-                (o.posX < newposX + this.sizeX && o.posY < newposY +this.sizeY) 
+                (o.posX + o.sizeX > newposX - this.sizeX / 2.0f && o.posY + o.sizeY > newposY - this.sizeY / 2.0f) &&
+                (o.posX < newposX + this.sizeX / 2.0f && o.posY < newposY +this.sizeY / 2.0f) 
               ){
                 canMove = false;
               }
@@ -78,8 +78,8 @@ class Character{
             for(int i = 0 ; i<(obstacles.size()) ; i++){
               Obstacle o = obstacles.get(i);
               if(
-                (o.posX + o.sizeX > newposX && o.posY + o.sizeY > newposY) &&
-                (o.posX < newposX + this.sizeX && o.posY < newposY +this.sizeY) 
+                (o.posX + o.sizeX > newposX - this.sizeX / 2.0f && o.posY + o.sizeY > newposY - this.sizeY / 2.0f) &&
+                (o.posX < newposX + this.sizeX / 2.0f && o.posY < newposY +this.sizeY / 2.0f) 
               ){
                 canMove = false;
               }
@@ -97,8 +97,8 @@ class Character{
           for(int i = 0 ; i<(obstacles.size()) ; i++){
             Obstacle o = obstacles.get(i);
             if(
-              (o.posX + o.sizeX > newposX && o.posY + o.sizeY > newposY) &&
-              (o.posX < newposX + this.sizeX && o.posY < newposY +this.sizeY) 
+              (o.posX + o.sizeX > newposX - this.sizeX / 2.0f && o.posY + o.sizeY > newposY - this.sizeY / 2.0f) &&
+              (o.posX < newposX + this.sizeX / 2.0f && o.posY < newposY + this.sizeY / 2.0f) 
             ){
               canMove = false;
             }
@@ -141,8 +141,8 @@ class Character{
     for(int i = 0 ; i<(obstacles.size()) ; i++){
       Obstacle o = obstacles.get(i);
        if(
-        (o.posX + o.sizeX > this.posX && o.posY + o.sizeY > this.posY) &&
-        (o.posX < this.posX + this.sizeX && o.posY < this.posY +this.sizeY) 
+        (o.posX + o.sizeX > this.posX - this.sizeX / 2.0f && o.posX < this.posX + this.sizeX / 2.0f) &&
+        (o.posY + o.sizeY > this.posY - this.sizeY / 2.0f && o.posY > this.posY + this.sizeY / 2.0f)
       ){
         canMove = false;
       }
@@ -204,8 +204,8 @@ class PlayerCharacter extends Character {
     for(int i = 0 ; i<(obstacles.size()) ; i++){
       Obstacle o = obstacles.get(i);
        if(
-        (o.posX + o.sizeX > this.posX && o.posY + o.sizeY > this.posY) &&
-        (o.posX < this.posX + this.sizeX && o.posY < this.posY +this.sizeY) 
+        (o.posX + o.sizeX > this.posX - this.sizeX / 2.0f && o.posX < this.posX + this.sizeX / 2.0f) &&
+        (o.posY + o.sizeY > this.posY - this.sizeY / 2.0f && o.posY > this.posY + this.sizeY / 2.0f)
       ){
         canMove = false;
       }
