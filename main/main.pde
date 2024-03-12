@@ -49,8 +49,8 @@ void setup() {
   MouseCursor = new Character(mouseX, mouseY, 0, 0, 0, 0, 0.0f, null, null, 0, 0, "../Rick.png");
   
   PC = new PlayerCharacter(width/2.0f, height/2.0f, 50, 50, 3, 5.0f, 0.0f, MouseCursor, null, 0, 0, "../Images/Rick.png");
-  NPC1 = new Character(width/2.0f + 50, height/2.0f, 50, 50, 3, 5.0f, 0.0f, PC, null, 100.0f, 0, "../Images/Morty.png");
-  NPC2 = new Character(width/2.0f + 100, height/2.0f, 50, 50, 3, 5.0f, 0.0f, NPC1, null, 100.0f, 0, "../Images/Morty.png");
+  NPC1 = new Character(width/2.0f + 50, height/2.0f, 50, 50, 3, 5.0f, 0.0f, null, null, 100.0f, 0, "../Images/Morty.png");
+  NPC2 = new Character(width/2.0f + 100, height/2.0f, 50, 50, 3, 5.0f, 0.0f, null, null, 100.0f, 0, "../Images/Morty.png");
 }
 float GetDistance(float X1, float X2, float Y1, float Y2){
   float c1 = X1-X2;
@@ -125,10 +125,26 @@ void draw() {
         (currentEnemy.posX + currentEnemy.sizeX > PC.posX && currentEnemy.posY + currentEnemy.sizeY > PC.posY) &&
         (currentEnemy.posX < PC.posX +PC.sizeX && currentEnemy.posY < PC.posY +PC.sizeY) 
     ){
-      col++;
+      currentEnemy.life--;
+      if(currentEnemy.life <= 0)
+      Enemies.remove(i);
     }
+    
   }
   text("Colisions with player: " + col, 500, 40); 
+  //colisions npc player
+  if(NPC1.characterToFollow == null){
+     if(
+        (NPC1.posX + NPC1.sizeX > PC.posX && NPC1.posY + NPC1.sizeY > PC.posY) &&
+        (NPC1.posX < PC.posX +PC.sizeX && NPC1.posY < PC.posY +PC.sizeY) 
+      )NPC1.characterToFollow = PC;
+  }
+  if(NPC2.characterToFollow == null){
+     if(
+        (NPC2.posX + NPC2.sizeX > PC.posX && NPC2.posY + NPC2.sizeY > PC.posY) &&
+        (NPC2.posX < PC.posX +PC.sizeX && NPC2.posY < PC.posY +PC.sizeY) 
+      )NPC2.characterToFollow = NPC1;
+  }
 }
 
 void keyPressed() { //Turn on keys

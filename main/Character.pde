@@ -3,6 +3,7 @@ class Character{
   float posX,posY,sizeX,sizeY;
   int life, maxLife;
   float speed, increment;
+  float maxSpeed = 50;
   Character characterToFollow, characterToAvoid;
   float followingDistance, avoidDistance;
   PImage sprite;
@@ -34,39 +35,80 @@ class Character{
   }
   
   void Follow() {
+    if(this.characterToFollow != null){
+      this.speed += this.sign * deltaTime * this.increment;
+      if(this.speed > MAX_SPEED || this.speed < 1.0f) this.sign *= -1;
+      //Accelerate/Decelerate when chasing the characters
     
-    this.speed += this.sign * deltaTime * this.increment;
-    if(this.speed > MAX_SPEED || this.speed < 1.0f) this.sign *= -1;
-    //Accelerate/Decelerate when chasing the characters
-    
-    if((this.characterToFollow.posX - this.posX) * (this.characterToFollow.posX - this.posX) + 
-      (this.characterToFollow.posY - this.posY) * (this.characterToFollow.posY - this.posY) >= 
-      this.followingDistance * this.followingDistance + ERROR) { 
-      //Check for the distance to be far enough to need movement, up to a small error.
+      if((this.characterToFollow.posX - this.posX) * (this.characterToFollow.posX - this.posX) + 
+        (this.characterToFollow.posY - this.posY) * (this.characterToFollow.posY - this.posY) >= 
+        this.followingDistance * this.followingDistance + ERROR) { 
+        //Check for the distance to be far enough to need movement, up to a small error.
         
-      float xDir = this.characterToFollow.posX - this.posX, yDir = this.characterToFollow.posY - this.posY;
-      float modulus = sqrt(xDir * xDir + yDir * yDir);
-      modulus = GetDistance(this.characterToFollow.posX , this.posX, this.characterToFollow.posY,this.posY);
-      xDir /= modulus;
-      yDir /= modulus;
-      if(this.characterToAvoid!=null){
-        float newposX =  this.posX + xDir * deltaTime * this.speed;
-        float newposY = this.posY + yDir * deltaTime * this.speed;
-        float distanceBtwn = GetDistance(this.characterToAvoid.posX, newposX, this.characterToAvoid.posY, newposY);
-        if(distanceBtwn>this.avoidDistance*1.1f){
-          this.posX = newposX;
-          this.posY = newposY;
+        float xDir = this.characterToFollow.posX - this.posX, yDir = this.characterToFollow.posY - this.posY;
+        float modulus = sqrt(xDir * xDir + yDir * yDir);
+        modulus = GetDistance(this.characterToFollow.posX , this.posX, this.characterToFollow.posY,this.posY);
+        xDir /= modulus;
+        yDir /= modulus;
+        if(this.characterToAvoid!=null){
+          float newposX =  this.posX + xDir * deltaTime * this.speed;
+          float newposY = this.posY + yDir * deltaTime * this.speed;
+          
+          float distanceBtwn = GetDistance(this.characterToAvoid.posX, newposX, this.characterToAvoid.posY, newposY);
+          if(distanceBtwn>this.avoidDistance*1.1f){
+            boolean canMove = true;
+            for(int i = 0 ; i<(obstacles.size()) ; i++){
+              Obstacle o = obstacles.get(i);
+              if(
+                (o.posX + o.sizeX > newposX && o.posY + o.sizeY > newposY) &&
+                (o.posX < newposX + this.sizeX && o.posY < newposY +this.sizeY) 
+              ){
+                canMove = false;
+              }
+              if(canMove){
+                this.posX = newposX;
+                this.posY = newposY;
+              }
+            }
+          }
+          else if(distanceBtwn < this.avoidDistance*.9f){
+            newposX = this.posX - xDir * deltaTime * this.speed;
+            newposY = this.posY - yDir * deltaTime * this.speed;
+            boolean canMove = true;
+            for(int i = 0 ; i<(obstacles.size()) ; i++){
+              Obstacle o = obstacles.get(i);
+              if(
+                (o.posX + o.sizeX > newposX && o.posY + o.sizeY > newposY) &&
+                (o.posX < newposX + this.sizeX && o.posY < newposY +this.sizeY) 
+              ){
+                canMove = false;
+              }
+              if(canMove){
+                this.posX = newposX;
+                this.posY = newposY;
+              }
+            }
+          }
         }
-        else if(distanceBtwn < this.avoidDistance*.9f){
-          this.posX -= xDir * deltaTime * this.speed;
-          this.posY -= yDir * deltaTime * this.speed;
+        else{
+          float newposX = this.posX + xDir * deltaTime * this.speed;
+          float newposY = this.posY + yDir * deltaTime * this.speed;
+          boolean canMove = true;
+          for(int i = 0 ; i<(obstacles.size()) ; i++){
+            Obstacle o = obstacles.get(i);
+            if(
+              (o.posX + o.sizeX > newposX && o.posY + o.sizeY > newposY) &&
+              (o.posX < newposX + this.sizeX && o.posY < newposY +this.sizeY) 
+            ){
+              canMove = false;
+            }
+          }
+          if(canMove){
+            this.posX = newposX;
+            this.posY = newposY;
+          }
         }
       }
-      else{
-        this.posX += xDir * deltaTime * this.speed;
-        this.posY += yDir * deltaTime * this.speed;
-      }
-      //Move toward objective with proper speed scaling and deltaTime
     }
   }
   
@@ -75,8 +117,13 @@ class Character{
     image(lifebar[life], this.posX - this.sizeX/2.0f, this.posY - this.sizeY, this.sizeX,this.sizeY);
     //Draw the character
   }
+  void increaseSpeed(){
+    this.speed += this.increment;
+    this.speed%=this.maxSpeed;
+  }
   
   void Wander() {
+  
     if(++this.wanderCommit > WANDER_TIME) {
       this.wanderCommit = 0;
       this.wanderX = int(random(-1.5,1.5));
@@ -87,8 +134,24 @@ class Character{
       }
       //Set a random wander direction every some frames
     }
-    this.posX += this.speed * deltaTime * this.wanderX;
-    this.posY += this.speed * deltaTime * this.wanderY;
+    float newposX = this.posX += this.speed * deltaTime * this.wanderX;
+    float newposY = this.posY += this.speed * deltaTime * this.wanderY;
+    boolean canMove = true;
+    //col·lisions amb obstacles
+    for(int i = 0 ; i<(obstacles.size()) ; i++){
+      Obstacle o = obstacles.get(i);
+       if(
+        (o.posX + o.sizeX > this.posX && o.posY + o.sizeY > this.posY) &&
+        (o.posX < this.posX + this.sizeX && o.posY < this.posY +this.sizeY) 
+      ){
+        canMove = false;
+      }
+    }
+    if(canMove){
+      this.posX = newposX;
+      this.posY = newposY;
+      increaseSpeed();
+    }
     //Wander in the random direction
   }
   
@@ -134,9 +197,24 @@ class PlayerCharacter extends Character {
       ySpeed = ySpeed/modulus;
       ySpeed *= 5.0f;
     }
-    this.posX = this.posX + xSpeed;
-    this.posY = this.posY + ySpeed;
+    float newposX = this.posX + xSpeed;
+    float newposY = this.posY + ySpeed;
+    boolean canMove = true;
     //Move with keys
+    for(int i = 0 ; i<(obstacles.size()) ; i++){
+      Obstacle o = obstacles.get(i);
+       if(
+        (o.posX + o.sizeX > this.posX && o.posY + o.sizeY > this.posY) &&
+        (o.posX < this.posX + this.sizeX && o.posY < this.posY +this.sizeY) 
+      ){
+        canMove = false;
+      }
+    }
+    if(canMove){
+      this.posX = newposX;
+      this.posY = newposY;
+      increaseSpeed();
+    }
   }
   
 }

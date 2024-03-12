@@ -1,12 +1,13 @@
 
 final float MIN_SIZE_X = 15;
-final float MAX_SIZE_X = 25;
-final float MIN_SIZE_Y = 10;
-final float MAX_SIZE_Y = 15;
+final float MAX_SIZE_X = 45;
+final float MIN_SIZE_Y = 20;
+final float MAX_SIZE_Y = 35;
 
-final int NUM_OBSTACLES = 12;
+final int NUM_OBSTACLES = 16;
 
-ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
+
+
 
 class Obstacle{
   float posX,posY,sizeX,sizeY;
@@ -19,6 +20,7 @@ class Obstacle{
   
 }
 
+ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 void GenerateObstacles(){
   for(int i = 0; i < NUM_OBSTACLES; i++)
     obstacles.add( new Obstacle());
