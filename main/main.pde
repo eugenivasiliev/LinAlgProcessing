@@ -47,7 +47,7 @@ void setup() {
   bgMusic.loop();
   printStartScreen();
   
-  MouseCursor = new Character(mouseX, mouseY, 0, 0, 0, 0, 0.0f, null, null, 0, 0, "../Rick.png");
+  MouseCursor = new Character(mouseX, mouseY, 0, 0, 0, 0, 0.0f, null, null, 0, 0, "../Images/Rick.png");
   
   PC = new PlayerCharacter(width/2.0f, height/2.0f, 50, 50, 3, 5.0f, 0.0f, MouseCursor, null, 0, 0, "../Images/Rick.png");
   NPC1 = new Character(width/2.0f + 50, height/2.0f, 50, 50, 3, 5.0f, 0.0f, null, null, 100.0f, 0, "../Images/Morty.png");
@@ -103,6 +103,7 @@ void draw() {
     Enemy.Draw();
   }
   DrawObstacles();
+  DrawPowerUps();
   //Update and draw all enemies
   if(start){
     countdown -= deltaTime();
@@ -177,6 +178,7 @@ void keyReleased() { //Turn off keys, consider enemy number
       start = true;
       countdown = timeToBeat;
       GenerateObstacles();
+      GeneratePowerUps();
       bgMusic.stop();
       return;
       //Start game
