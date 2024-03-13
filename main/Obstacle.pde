@@ -22,6 +22,7 @@ class Obstacle{
 
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 void GenerateObstacles(){
+  obstacles.clear();
   for(int i = 0; i < NUM_OBSTACLES; i++)
     obstacles.add( new Obstacle());
 }

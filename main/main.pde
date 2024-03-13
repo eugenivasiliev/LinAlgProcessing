@@ -39,6 +39,21 @@ int spawnRate = 0;
 ArrayList<Character> Enemies = new ArrayList<Character>();
 //Characters
 
+void StartGame(){
+  Enemies.clear();
+  MouseCursor = new Character(mouseX, mouseY, 0, 0, 0, 0, 0.0f, null, null, 0, 0, "../Images/Rick.png");
+  PC = new PlayerCharacter(width/2.0f, height/2.0f, 50, 50, 3, 5.0f, 0.0f, MouseCursor, null, 0, 0, "../Images/Rick.png");
+  NPC1 = new Character(random(width), random(height), 50, 50, 3, 5.0f, 0.0f, null, null, 100.0f, 0, "../Images/Morty.png");
+  NPC2 = new Character(random(width), random(height), 50, 50, 3, 5.0f, 0.0f, null, null, 100.0f, 0, "../Images/Morty.png");
+  start = true;
+  countdown = timeToBeat;
+  GenerateObstacles();
+  GeneratePowerUps();
+  bgMusic.stop();
+  bgMusic = new SoundFile(this,"../AudioFiles/level.mp3");
+  bgMusic.loop();
+      
+}
 void setup() {
   size(1800, 900); 
   frameRate(FPS);
@@ -47,11 +62,6 @@ void setup() {
   bgMusic.loop();
   printStartScreen();
   
-  MouseCursor = new Character(mouseX, mouseY, 0, 0, 0, 0, 0.0f, null, null, 0, 0, "../Images/Rick.png");
-  
-  PC = new PlayerCharacter(width/2.0f, height/2.0f, 50, 50, 3, 5.0f, 0.0f, MouseCursor, null, 0, 0, "../Images/Rick.png");
-  NPC1 = new Character(width/2.0f + 50, height/2.0f, 50, 50, 3, 5.0f, 0.0f, null, null, 100.0f, 0, "../Images/Morty.png");
-  NPC2 = new Character(width/2.0f + 100, height/2.0f, 50, 50, 3, 5.0f, 0.0f, null, null, 100.0f, 0, "../Images/Morty.png");
 }
 float GetDistance(float X1, float X2, float Y1, float Y2){
   float c1 = X1-X2;
@@ -115,12 +125,12 @@ void draw() {
         if(lifes <= 0)
           exit();
       else{
-        //codi per reiniciar el joc(pendent)
+        StartGame();
       }
     }
   }
   //collisions enemics 
-  int col = 0;
+  //int col = 0;
   for(int i = 0 ; i<(Enemies.size()) ; i++){
     Character currentEnemy = Enemies.get(i);
     if(
@@ -131,9 +141,24 @@ void draw() {
       if(currentEnemy.life <= 0)
       Enemies.remove(i);
     }
+    if(
+        (currentEnemy.posX + currentEnemy.sizeX > NPC2.posX && currentEnemy.posY + currentEnemy.sizeY > NPC2.posY) &&
+        (currentEnemy.posX < NPC2.posX +NPC2.sizeX && currentEnemy.posY < NPC2.posY +NPC2.sizeY) 
+    ){
+      NPC2.life--;
+      if(NPC2.life <= 0){   
+        lifes--;
+        if(lifes <= 0)
+          exit();
+        else
+          StartGame();      
+      }
+      else
+        Enemies.remove(i);
+    }
     
   }
-  text("Colisions with player: " + col, 500, 40); 
+ // text("Colisions with player: " + col, 500, 40); 
   //colisions npc player
   if(NPC1.characterToFollow == null){
      if(
@@ -176,9 +201,8 @@ void keyReleased() { //Turn off keys, consider enemy number
       //Select mode
     } else if(key == ENTER) {
       start = true;
-      countdown = timeToBeat;
-      GenerateObstacles();
-      GeneratePowerUps();
+      
+      StartGame();
       bgMusic.stop();
       return;
       //Start game

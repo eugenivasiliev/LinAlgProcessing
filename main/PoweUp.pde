@@ -4,11 +4,11 @@ Teleporter teleporter;
 Booster booster;
 Healer healer;
 void GeneratePowerUps(){
-  repelent = new Repelent("../Images/repelent.png",30,30);
-  remover = new Remover("../Images/bomb.png",30,30);
-  teleporter = new Teleporter("../Images/portalGun.png",30,30);
-  booster = new Booster("../Images/wingedBoots.png",30,30);
-  healer = new Healer("../Images/FAKit.png",30,30);
+  repelent = new Repelent("../Images/repelent.png",40,40);
+  remover = new Remover("../Images/bomb.png",40,40);
+  teleporter = new Teleporter("../Images/portalGun.png",40,40);
+  booster = new Booster("../Images/wingedBoots.png",40,40);
+  healer = new Healer("../Images/FAKit.png",40,40);
 }
 void DrawPowerUps(){
   repelent.DrawObstacle();
@@ -84,6 +84,8 @@ class Booster extends PowerUp{
   }
   void Activate(Character target){
     target.speed*=1.5;
+    NPC1.speed*=1.5;
+    NPC2.speed*=1.5;
   }
 }
 class Healer extends PowerUp{
@@ -92,5 +94,7 @@ class Healer extends PowerUp{
   }
   void Activate(Character target){
     target.life = target.maxLife;
+    NPC1.life = NPC1.maxLife;
+    NPC2.life = NPC2.maxLife;
   }
 }

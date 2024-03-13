@@ -113,8 +113,9 @@ class Character{
   }
   
   void Draw() {
+    if(this.life>0){
     image(this.sprite, this.posX - this.sizeX/2.0f, this.posY - this.sizeY/2.0f, this.sizeX,this.sizeY);
-    image(lifebar[life], this.posX - this.sizeX/2.0f, this.posY - this.sizeY, this.sizeX,this.sizeY);
+    image(lifebar[life], this.posX - this.sizeX/2.0f, this.posY - this.sizeY, this.sizeX,this.sizeY);}
     //Draw the character
   }
   void increaseSpeed(){
