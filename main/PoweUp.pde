@@ -41,8 +41,10 @@ class PowerUp{
       ){
         Activate(PC);
         collectedPowerUps++;
+        if(collectedPowerUps >= 5)
+          exit();
         collected = true;
-        score+=10;
+        score+=20;
       }
     }
   }
@@ -65,6 +67,7 @@ class Remover extends PowerUp{
     super(spritePath, sX, sY);
   }
   void Activate(Character target){
+    score+= Enemies.size()*20;
     Enemies.clear();
   }
 }

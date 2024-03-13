@@ -137,8 +137,7 @@ void draw() {
         (currentEnemy.posX + currentEnemy.sizeX > PC.posX && currentEnemy.posY + currentEnemy.sizeY > PC.posY) &&
         (currentEnemy.posX < PC.posX +PC.sizeX && currentEnemy.posY < PC.posY +PC.sizeY) 
     ){
-      currentEnemy.life--;
-      if(currentEnemy.life <= 0)
+      score+= 10;
       Enemies.remove(i);
     }
     if(
