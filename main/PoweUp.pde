@@ -41,8 +41,9 @@ class PowerUp{
       ){
         Activate(PC);
         collectedPowerUps++;
-        if(collectedPowerUps >= 5)
-          exit();
+        if(collectedPowerUps >= 5) {
+          bossScreen = true;
+        }
         collected = true;
         score+=20;
       }

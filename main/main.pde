@@ -24,6 +24,7 @@ float deltaTime;
 int N = 0;
 boolean mode = true; 
 boolean start = false; 
+boolean bossScreen = false;
 //Start variables
 
 int lastTime = 0;
@@ -37,6 +38,7 @@ PlayerCharacter PC;
 Character NPC1, NPC2;
 int spawnRate = 0;
 ArrayList<Character> Enemies = new ArrayList<Character>();
+ArrayList<Cannon> cannons = new ArrayList<Cannon>();
 //Characters
 
 void StartGame(){
@@ -85,6 +87,34 @@ void draw() {
   deltaTime = deltaTime();
   //Set deltaTime once to avoid recomputation
   
+  if(bossScreen) {
+    background(0);
+    if(cannons.size() < 6) {
+      for(int i = 0; i < 6; i++) {
+        cannons.add(new Cannon(30.0f, 0.0f, 0.0f, 100.0f, 50.0f, 1, color(0, 0, 255), i * 60.0f, 300.0f));
+      }
+    }
+    fill(color(255, 0, 0));
+    rect(width / 2.0f - 50.0f, height / 2.0f - 50.0f, 100.0f, 100.0f);
+    PC.Movement(mode);
+    PC.posCheck();
+    PC.Draw();
+    boolean defeated = true;
+    for(int i = 0; i < 6; i++) {
+      if(cannons.get(i).animationDone) {
+        defeated = false;
+      }
+    }
+    if(defeated) {
+      background(0);
+      textSize(50);
+      text("You win!", 40, 40); 
+      while(!keyPressed);
+      exit();
+    }
+    return;
+  }
+  
   if(Enemies.size() < N && ++spawnRate > SPAWN_RATE) { 
     Enemies.add(new Character(0, random(0, height), 50.0f, 50.0f, 3, 2.5f, INCREMENT, NPC2, PC, 0.0f, 200.0f, "../Images/CROMULON.png"));
     spawnRate = 0;
@@ -116,14 +146,19 @@ void draw() {
   DrawPowerUps();
   //Update and draw all enemies
   if(start){
-    countdown -= deltaTime();
+    countdown -= deltaTime/FPS;
     textSize(24);
     text("Lifes: "+lifes+"\nRemaining Time: " + (int)countdown +"\nScore: " +score, 40, 40); 
       if(countdown <= 0){
         lifes--;
         countdown = timeToBeat;
-        if(lifes <= 0)
+        if(lifes <= 0) {
+          background(0);
+          textSize(50);
+          text("You lost!", 40, 40); 
+          while(!keyPressed);
           exit();
+        }
       else{
         StartGame();
       }
@@ -147,8 +182,13 @@ void draw() {
       NPC2.life--;
       if(NPC2.life <= 0){   
         lifes--;
-        if(lifes <= 0)
+        if(lifes <= 0) {
+          background(0);
+          textSize(50);
+          text("You lost!", 40, 40); 
+          while(!keyPressed);
           exit();
+        }
         else
           StartGame();      
       }
