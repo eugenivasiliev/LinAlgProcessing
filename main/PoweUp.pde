@@ -43,6 +43,8 @@ class PowerUp{
         collectedPowerUps++;
         if(collectedPowerUps >= 5) {
           bossScreen = true;
+          
+          collectedPowerUps = 0;
         }
         collected = true;
         score+=20;

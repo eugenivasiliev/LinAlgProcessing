@@ -1,3 +1,4 @@
+
 class Boss {
   float health;
   float posX, posY;
@@ -25,6 +26,7 @@ class Cannon {
   float distFromCenter;
   Bullet b;
   
+PImage cannonSprite = loadImage("../Images/cannon.png");
   Cannon(float _minDist, float _posX, float _posY, float _sizeX, float _sizeY, int _interactions, color _c, float _angle, float _distFromCenter) {
     this.minDist = _minDist;
     this.posX = _posX;
@@ -62,7 +64,7 @@ class Cannon {
   void Draw() {
     pushMatrix();
     translate(width/2.0f,height/2.0f);
-    rotate(radians(angle));
+     rotate(radians(angle));
     translate(-distFromCenter, 0);
     if(animation) Animation();
     else if(animationDone) {
@@ -70,10 +72,13 @@ class Cannon {
       sizeY = 50.0f;
       b.Draw();
     }
-    fill(c);
-    circle(0, 0, sizeY);
-    rect(0, - sizeY / 2.0f, sizeX, sizeY);
+    //fill(c);
+    //circle(0, 0, sizeY);
+    //rect(0, - sizeY / 2.0f, sizeX, sizeY);
+     
+    image(cannonSprite,0, - sizeY / 2.0f, sizeX, sizeY);
     popMatrix();
+    CheckInteract();
   }
 }
 
@@ -83,6 +88,7 @@ class Bullet {
   float angle;
   float distFromCenter;
   float speed;
+  PImage bomb = loadImage("../Images/bomb.png");
   Bullet(float _posX, float _posY, float _sizeX, float _sizeY, float _angle, float _distFromCenter, float _speed) {
     this.posX = _posX;
     this.posY = _posY;
@@ -94,8 +100,10 @@ class Bullet {
   }
   void Draw() {
     if(posX < distFromCenter) {
-      fill(color(255, 0, 255));
-      rect(posX - sizeX / 2.0f, posY - sizeY / 2.0f, sizeX, sizeY);
+       
+      image(bomb,posX - sizeX / 2.0f, posY - sizeY / 2.0f, sizeX, sizeY);
+      //fill(color(255, 0, 255));
+      //rect(posX - sizeX / 2.0f, posY - sizeY / 2.0f, sizeX, sizeY);
       posX += speed;
     }
   }
